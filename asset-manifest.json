@@ -1,15 +1,13 @@
 {
   "files": {
-    "main.css": "/mcuverse/static/css/main.3250407e.chunk.css",
-    "main.js": "/mcuverse/static/js/main.0e52184e.chunk.js",
-    "main.js.map": "/mcuverse/static/js/main.0e52184e.chunk.js.map",
-    "runtime~main.js": "/mcuverse/static/js/runtime~main.86728467.js",
-    "runtime~main.js.map": "/mcuverse/static/js/runtime~main.86728467.js.map",
-    "static/js/2.91271a7c.chunk.js": "/mcuverse/static/js/2.91271a7c.chunk.js",
-    "static/js/2.91271a7c.chunk.js.map": "/mcuverse/static/js/2.91271a7c.chunk.js.map",
+    "main.css": "/mcuverse/static/css/main.5ae58e53.css",
+    "main.js": "/mcuverse/static/js/main.0018b336.js",
     "index.html": "/mcuverse/index.html",
-    "precache-manifest.1f3690601be3775acab637dac023df19.js": "/mcuverse/precache-manifest.1f3690601be3775acab637dac023df19.js",
-    "service-worker.js": "/mcuverse/service-worker.js",
-    "static/css/main.3250407e.chunk.css.map": "/mcuverse/static/css/main.3250407e.chunk.css.map"
-  }
+    "main.5ae58e53.css.map": "/mcuverse/static/css/main.5ae58e53.css.map",
+    "main.0018b336.js.map": "/mcuverse/static/js/main.0018b336.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.5ae58e53.css",
+    "static/js/main.0018b336.js"
+  ]
 }
