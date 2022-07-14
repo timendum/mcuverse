@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/mcuverse/static/css/main.5ae58e53.css",
-    "main.js": "/mcuverse/static/js/main.73145e5d.js",
+    "main.js": "/mcuverse/static/js/main.6698f4dc.js",
     "index.html": "/mcuverse/index.html",
     "main.5ae58e53.css.map": "/mcuverse/static/css/main.5ae58e53.css.map",
-    "main.73145e5d.js.map": "/mcuverse/static/js/main.73145e5d.js.map"
+    "main.6698f4dc.js.map": "/mcuverse/static/js/main.6698f4dc.js.map"
   },
   "entrypoints": [
     "static/css/main.5ae58e53.css",
-    "static/js/main.73145e5d.js"
+    "static/js/main.6698f4dc.js"
   ]
 }
