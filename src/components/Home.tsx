@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShuffle } from "@fortawesome/free-solid-svg-icons";
 import "../styles/Home.scss";
+import { Movie } from "../movies/index";
 
-const getRandomInt = (max) => {
+const getRandomInt = (max: number) => {
   return Math.floor(Math.random() * Math.floor(max));
 };
-const getRandomQuote = (movies) => {
+const getRandomQuote = (movies: Movie[]) => {
   let line = "";
   let randMovie = null;
   let randQuote = null;
@@ -26,7 +27,11 @@ const getRandomQuote = (movies) => {
   };
 };
 
-const Home = ({ movies }) => {
+interface HomeProp {
+  movies: Movie[];
+}
+
+const Home = ({ movies }: HomeProp) => {
   const [quote, setQuote] = useState(getRandomQuote(movies));
   const randomize = () => {
     setQuote(getRandomQuote(movies));

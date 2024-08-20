@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Home, Quote, Searchbar } from "./components";
 import "./App.scss";
-import movies from "./movies/index";
+import { subs as movies } from "./movies/index";
 import Fuse from "fuse.js";
 
 const fuse = new Fuse(
@@ -21,9 +21,12 @@ export default function App() {
   let quoteFromLocation;
   try {
     const queryParams = new URLSearchParams(document.location.search);
-    const indexFromUrl = parseInt(queryParams.get("quoteIndex"), 10);
+    let indexFromUrl = -1;
+    if (queryParams) {
+      indexFromUrl = parseInt(String(queryParams.get("quoteIndex")), 10);
+    }
     const movieFromUrl = queryParams.get("movie");
-    if (movieFromUrl && indexFromUrl) {
+    if (movieFromUrl && indexFromUrl >= 0) {
       const movie = movies.find((movie) => movie.id === movieFromUrl);
       if (movie) {
         quoteFromLocation = {
@@ -33,22 +36,33 @@ export default function App() {
         };
       }
     }
-  } catch (e) {}
+  } catch (e) {
+    console.log(e);
+  }
 
   const [linkQuote, setlinkQuote] = useState(quoteFromLocation);
   const [search, setSearch] = useState("");
   const [copyAlert, setCopyAlert] = useState(false);
 
-  const handleSearchChange = (event) => {
+  const handleSearchChange: React.ChangeEventHandler<HTMLInputElement> = (
+    event
+  ) => {
     setSearch(event.target.value.toLowerCase());
-    setlinkQuote(null);
+    setlinkQuote(undefined);
   };
 
-  const showSubs = () => {
+  type ShowSubsType = () => React.ReactNode;
+
+  const showSubs: ShowSubsType = () => {
     const finded = fuse.search(search, { limit: 99 });
     return finded.flatMap((row) => {
       return movies.map((movie) => {
-        if (movie.id === row.item.id) {
+        if (
+          movie.id === row.item.id &&
+          row.matches &&
+          row.matches[0] &&
+          row.matches[0].value
+        ) {
           if (
             row.matches[0].indices[0][1] - row.matches[0].indices[0][0] >
             search.length / 2
@@ -73,7 +87,7 @@ export default function App() {
       });
     });
   };
-  let body = <Home movies={movies} />;
+  let body: React.ReactNode = <Home movies={movies} />;
   if (linkQuote) {
     body = (
       <Quote
