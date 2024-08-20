@@ -1,7 +1,12 @@
 import React from "react";
 import "../styles/Searchbar.scss";
 
-function Searchbar(props) {
+interface SearchbarProps {
+  value: string;
+  onSearchChange: React.ChangeEventHandler<HTMLInputElement>;
+}
+
+function Searchbar(props: SearchbarProps) {
   return (
     <div className="searchContainer">
       <input
