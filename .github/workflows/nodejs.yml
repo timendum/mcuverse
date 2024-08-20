@@ -2,8 +2,7 @@ name: Build public pages
 
 on:
   push:
-    tags:
-      - "*"
+    branches: ['master']
 
 jobs:
   build:
