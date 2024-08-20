@@ -167,7 +167,7 @@ const subs: Movie[] = [
   },
   {
     id: "guardians3",
-    title: "3 Guardians of the Galaxy"
+    title: "3 Guardians of the Galaxy",
     subs: IIIGuardiansoftheGalaxy,
   },
   {
