@@ -52,7 +52,7 @@ const Home = ({ movies }: HomeProp) => {
         Originariamente sviluppato da /u/shonnyboymushi, espanso, tradotto e
         adattato da timendum.
         <br />
-        Ultimo film aggiunto: Ant-Man and the Wasp: Quantumania.
+        Ultimo film aggiunto: The Marvels.
       </div>
     </div>
   );

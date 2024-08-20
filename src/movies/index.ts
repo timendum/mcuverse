@@ -34,11 +34,13 @@ import IIThor from "./2 Thor.json";
 import IIIAntMan from "./3 Ant-Man.json";
 import IIIAvengers from "./3 Avengers.json";
 import IIICaptainAmerica from "./3 Captain America.json";
+import IIIGuardiansoftheGalaxy from "./3 Guardians of the Galaxy.json";
 import IIIIronMan from "./3 Iron Man.json";
 import IIISpiderMan from "./3 Spider-Man.json";
 import IIIThor from "./3 Thor.json";
 import IVAvengers from "./4 Avengers.json";
 import IVThor from "./4 Thor.json";
+import Marvels from "./Marvels.json";
 import ShangChi from "./Shang-Chi.json";
 import TheIncredibleHulk from "./The Incredible Hulk.json";
 
@@ -164,6 +166,11 @@ const subs: Movie[] = [
     subs: IIICaptainAmerica,
   },
   {
+    id: "guardians3",
+    title: "3 Guardians of the Galaxy"
+    subs: IIIGuardiansoftheGalaxy,
+  },
+  {
     id: "ironman3",
     title: "3 Iron Man",
     subs: IIIIronMan,
@@ -187,6 +194,11 @@ const subs: Movie[] = [
     id: "thor4",
     title: "4 Thor",
     subs: IVThor,
+  },
+  {
+    id: "marvels",
+    title: "The Marvels",
+    subs: Marvels,
   },
   {
     id: "shangchi",
