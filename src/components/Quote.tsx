@@ -27,7 +27,7 @@ const buildContext = (movie: Movie, index: number) => {
 
 interface QuoteProp {
   subIndex: number;
-  search: string;
+  highlight: [number, number];
   movie: Movie;
   handle: (s: boolean) => void;
   startingShowModal: boolean;
@@ -35,7 +35,7 @@ interface QuoteProp {
 
 const Quote = ({
   subIndex,
-  search,
+  highlight,
   movie,
   handle,
   startingShowModal,
@@ -56,7 +56,6 @@ const Quote = ({
   };
   const sub = movie.subs[subIndex];
   const jSub = sub.sub.join(" ");
-  const strIndex = jSub.toLowerCase().indexOf(search.toLowerCase());
   const handleClickShare: ShareBarProps["handleClick"] = (purpose) => {
     let text = "";
     switch (purpose) {
@@ -83,11 +82,11 @@ const Quote = ({
   return (
     <div className="sub" onClick={handleClickModal} onKeyUp={handleEsc}>
       <p>
-        {jSub.substring(0, strIndex)}
+        {jSub.substring(0, highlight[0])}
         <span className="highlight">
-          {jSub.substring(strIndex, strIndex + search.length)}
+          {jSub.substring(highlight[0], highlight[1])}
         </span>
-        {jSub.substring(strIndex + search.length)}
+        {jSub.substring(highlight[1])}
         &nbsp;(
         <i>
           {movie.title} {sub.time}

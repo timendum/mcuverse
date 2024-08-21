@@ -76,6 +76,7 @@ export default function App() {
             threshold: 0.3,
             ignoreLocation: true,
             minMatchCharLength: 3,
+            ignoreFieldNorm: true,
           }
         )
       );
@@ -92,37 +93,38 @@ export default function App() {
   };
 
   const showSubs = () => {
-    const finded = fuse.search(search, { limit: 99 });
+    const finded = fuse.search(search, { limit: 50 });
     return finded.flatMap((row) => {
-      return movies.map((movie) => {
-        if (
-          movie.id === row.item.id &&
-          row.matches &&
-          row.matches[0] &&
-          row.matches[0].value
-        ) {
-          if (
-            row.matches[0].indices[0][1] - row.matches[0].indices[0][0] >
-            search.length / 2
-          ) {
-            const matched = row.matches[0].value.substring(
-              row.matches[0].indices[0][0],
-              row.matches[0].indices[0][1] + 1
-            );
-            return (
-              <Quote
-                key={movie.id + row.item.i}
-                subIndex={row.item.i}
-                search={matched}
-                movie={movie}
-                handle={setCopyAlert}
-                startingShowModal={false}
-              />
-            );
-          }
+      const movie = movies.find((movie) => movie.id === row.item.id);
+      if (movie) {
+        if (row.matches) {
+          let matched: [number, number] = [0, 0];
+          row.matches.forEach((match) => {
+            // for every match
+            match.indices.forEach((idx) => {
+              if (idx[1] - idx[0] > matched[1] - matched[0]) {
+                // this match is longer, highlight this one
+                matched = [idx[0], idx[1]];
+              }
+            });
+          });
+          return (
+            <Quote
+              key={movie.id + row.item.i}
+              subIndex={row.item.i}
+              highlight={[matched[0], matched[1] + 1]}
+              movie={movie}
+              handle={setCopyAlert}
+              startingShowModal={false}
+            />
+          );
+        } else {
+          console.error("Matches not found", row);
         }
-        return <div />;
-      });
+      } else {
+        console.error("Movie not found", row);
+      }
+      return <div key={row.item.id + "-miss-" + row.item.i} />;
     });
   };
   let body: React.ReactNode = <div />;
@@ -131,7 +133,7 @@ export default function App() {
       <Quote
         key={linkQuote.movie.id + linkQuote.index}
         subIndex={linkQuote.index}
-        search=""
+        highlight={[0, 0]}
         movie={linkQuote.movie}
         handle={setCopyAlert}
         startingShowModal={true}
