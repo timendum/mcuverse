@@ -1,23 +1,53 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Home, Quote, Searchbar } from "./components";
 import "./App.scss";
-import { subs as movies } from "./movies/index";
+import {
+  Phase1,
+  Phase2,
+  Phase3_1,
+  Phase3_2,
+  Phase4,
+  Phase5,
+  type Movie,
+} from "./movies/index";
 import Fuse from "fuse.js";
 
-const fuse = new Fuse(
-  movies.flatMap((x) =>
-    x.subs.map((y, i) => ({ id: x.id, sub: y.sub.join(" "), i: i }))
-  ),
-  {
-    keys: ["sub"],
-    includeMatches: true,
-    threshold: 0.3,
-    ignoreLocation: true,
-    minMatchCharLength: 3,
-  }
-);
+interface FuseEntry {
+  id: Movie["id"];
+  sub: string;
+  i: number;
+}
 
 export default function App() {
+  const [movies, setMovies] = useState<Movie[]>([]);
+  const [fuse, setFuse] = useState<Fuse<FuseEntry>>(new Fuse([]));
+  useEffect(() => {
+    console.log("Loading...");
+    Promise.all([Phase1, Phase2, Phase3_1, Phase3_2, Phase4, Phase5])
+      .then(([s1, s2, s3_1, s3_2, s4, s5]) => {
+        console.log("Loaded!");
+        setMovies(s1.concat(s2, s3_1, s3_2, s4, s5));
+      })
+      .catch(console.error);
+  }, []);
+  useEffect(() => {
+    if (movies.length > 0) {
+      setFuse(
+        new Fuse(
+          movies.flatMap((x) =>
+            x.subs.map((y, i) => ({ id: x.id, sub: y.sub.join(" "), i: i }))
+          ),
+          {
+            keys: ["sub"],
+            includeMatches: true,
+            threshold: 0.3,
+            ignoreLocation: true,
+            minMatchCharLength: 3,
+          }
+        )
+      );
+    }
+  }, [movies]);
   let quoteFromLocation;
   try {
     const queryParams = new URLSearchParams(document.location.search);
@@ -87,7 +117,7 @@ export default function App() {
       });
     });
   };
-  let body: React.ReactNode = <Home movies={movies} />;
+  let body: React.ReactNode = <div />;
   if (linkQuote) {
     body = (
       <Quote
@@ -101,6 +131,8 @@ export default function App() {
     );
   } else if (search.length >= 3) {
     body = showSubs();
+  } else if (movies.length > 0) {
+    body = <Home movies={movies} />;
   }
   return (
     <div className="App">
