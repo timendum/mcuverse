@@ -1,21 +1,19 @@
-import type { SubEntry } from "../movies/index";
+import type { Movie } from "../movies/index";
 import type { ShareBarProps } from "./ShareBar";
-
-interface ContextType {
-  prev: SubEntry[];
-  post: SubEntry[];
-}
 
 interface SubWheelProps {
   title: string;
-  context: ContextType;
+  context: {
+    prev: Movie["subs"];
+    post: Movie["subs"];
+  };
   timestamp: string;
   quote: string;
   onClick: ShareBarProps["handleClick"];
 }
 
 interface LineProps {
-  subs: SubEntry[];
+  subs: Movie["subs"];
 }
 
 const SubWheel = (props: SubWheelProps) => {

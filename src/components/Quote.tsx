@@ -2,13 +2,11 @@ import React, { useState } from "react";
 import Modal from "./Modal";
 import { SubWheel } from ".";
 import { ShareBar, ShareBarProps } from "./ShareBar";
-import type { Movie, SubEntry } from "../movies/index";
+import type { Movie } from "../movies/index";
 
 import "../styles/Quote.scss";
 
-type GenerateUrlType = (movieId?: string, subIndex?: number) => string;
-
-const generateUrl: GenerateUrlType = (movieId, subIndex) => {
+const generateUrl = (movieId?: string, subIndex?: number) => {
   const baseUrl = `${window.location.protocol}//${window.location.hostname}:${window.location.port}${window.location.pathname}`;
   if (movieId && subIndex) {
     return `${baseUrl}?movie=${movieId}&quoteIndex=${subIndex}`;
@@ -17,14 +15,7 @@ const generateUrl: GenerateUrlType = (movieId, subIndex) => {
   }
 };
 
-interface ContextType {
-  prev: SubEntry[];
-  post: SubEntry[];
-}
-
-type BuildContextType = (movie: Movie, subIndexindex: number) => ContextType;
-
-const buildContext: BuildContextType = (movie, index) => {
+const buildContext = (movie: Movie, index: number) => {
   const start = index - 10 >= 0 ? index - 10 : 0;
   const end = index + 10 >= movie.subs.length ? movie.subs.length : index + 10;
 
@@ -36,7 +27,7 @@ const buildContext: BuildContextType = (movie, index) => {
 
 interface QuoteProp {
   subIndex: number;
-  search: string;
+  highlight: [number, number];
   movie: Movie;
   handle: (s: boolean) => void;
   startingShowModal: boolean;
@@ -44,7 +35,7 @@ interface QuoteProp {
 
 const Quote = ({
   subIndex,
-  search,
+  highlight,
   movie,
   handle,
   startingShowModal,
@@ -65,7 +56,6 @@ const Quote = ({
   };
   const sub = movie.subs[subIndex];
   const jSub = sub.sub.join(" ");
-  const strIndex = jSub.toLowerCase().indexOf(search.toLowerCase());
   const handleClickShare: ShareBarProps["handleClick"] = (purpose) => {
     let text = "";
     switch (purpose) {
@@ -92,11 +82,11 @@ const Quote = ({
   return (
     <div className="sub" onClick={handleClickModal} onKeyUp={handleEsc}>
       <p>
-        {jSub.substring(0, strIndex)}
+        {jSub.substring(0, highlight[0])}
         <span className="highlight">
-          {jSub.substring(strIndex, strIndex + search.length)}
+          {jSub.substring(highlight[0], highlight[1])}
         </span>
-        {jSub.substring(strIndex + search.length)}
+        {jSub.substring(highlight[1])}
         &nbsp;(
         <i>
           {movie.title} {sub.time}
