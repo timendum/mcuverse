@@ -21,7 +21,14 @@ interface FuseEntry {
 export default function App() {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [fuse, setFuse] = useState<Fuse<FuseEntry>>(new Fuse([]));
+
+  const [linkQuote, setlinkQuote] =
+    useState<ReturnType<typeof matchQuoteFromLocation>>(undefined);
+  const [search, setSearch] = useState("");
+  const [copyAlert, setCopyAlert] = useState(false);
+
   useEffect(() => {
+    // Load async the subs
     console.log("Loading...");
     Promise.all([Phase1, Phase2, Phase3_1, Phase3_2, Phase4, Phase5])
       .then(([s1, s2, s3_1, s3_2, s4, s5]) => {
@@ -30,8 +37,34 @@ export default function App() {
       })
       .catch(console.error);
   }, []);
+
+  const matchQuoteFromLocation = () => {
+    // Function to search quote from URL
+    try {
+      const queryParams = new URLSearchParams(document.location.search);
+      let indexFromUrl = -1;
+      if (queryParams) {
+        indexFromUrl = parseInt(String(queryParams.get("quoteIndex")), 10);
+      }
+      const movieFromUrl = queryParams.get("movie");
+      if (movieFromUrl && indexFromUrl >= 0) {
+        const movie = movies.find((movie) => movie.id === movieFromUrl);
+        if (movie) {
+          return {
+            movie: movie,
+            sub: movie.subs[indexFromUrl],
+            index: indexFromUrl,
+          };
+        }
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
   useEffect(() => {
     if (movies.length > 0) {
+      // Movies loaded
+      // Build index
       setFuse(
         new Fuse(
           movies.flatMap((x) =>
@@ -47,32 +80,9 @@ export default function App() {
         )
       );
     }
-  }, [movies]);
-  let quoteFromLocation;
-  try {
-    const queryParams = new URLSearchParams(document.location.search);
-    let indexFromUrl = -1;
-    if (queryParams) {
-      indexFromUrl = parseInt(String(queryParams.get("quoteIndex")), 10);
-    }
-    const movieFromUrl = queryParams.get("movie");
-    if (movieFromUrl && indexFromUrl >= 0) {
-      const movie = movies.find((movie) => movie.id === movieFromUrl);
-      if (movie) {
-        quoteFromLocation = {
-          movie: movie,
-          sub: movie.subs[indexFromUrl],
-          index: indexFromUrl,
-        };
-      }
-    }
-  } catch (e) {
-    console.log(e);
-  }
-
-  const [linkQuote, setlinkQuote] = useState(quoteFromLocation);
-  const [search, setSearch] = useState("");
-  const [copyAlert, setCopyAlert] = useState(false);
+    // Search quote from URL
+    setlinkQuote(matchQuoteFromLocation());
+  }, [movies, matchQuoteFromLocation]);
 
   const handleSearchChange: React.ChangeEventHandler<HTMLInputElement> = (
     event
@@ -133,6 +143,12 @@ export default function App() {
     body = showSubs();
   } else if (movies.length > 0) {
     body = <Home movies={movies} />;
+  } else {
+    return (
+      <div className="home">
+        <div className="credits">Loading...</div>
+      </div>
+    );
   }
   return (
     <div className="App">
