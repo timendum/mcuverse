@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Home, Quote, Searchbar } from "./components";
 import "./App.scss";
 import {
@@ -38,7 +38,7 @@ export default function App() {
       .catch(console.error);
   }, []);
 
-  const matchQuoteFromLocation = () => {
+  const matchQuoteFromLocation = useCallback(() => {
     // Function to search quote from URL
     try {
       const queryParams = new URLSearchParams(document.location.search);
@@ -60,7 +60,7 @@ export default function App() {
     } catch (e) {
       console.log(e);
     }
-  };
+  }, [movies]);
   useEffect(() => {
     if (movies.length > 0) {
       // Movies loaded
@@ -91,9 +91,7 @@ export default function App() {
     setlinkQuote(undefined);
   };
 
-  type ShowSubsType = () => React.ReactNode;
-
-  const showSubs: ShowSubsType = () => {
+  const showSubs = () => {
     const finded = fuse.search(search, { limit: 99 });
     return finded.flatMap((row) => {
       return movies.map((movie) => {
