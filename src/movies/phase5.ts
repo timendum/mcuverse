@@ -1,6 +1,7 @@
 import m1 from "./3 Ant-Man.json";
 import m2 from "./3 Guardians of the Galaxy.json";
 import m3 from "./Marvels.json";
+import m4 from "./3 Deadpool.json";
 
 const subs = [
   {
@@ -17,12 +18,12 @@ const subs = [
     id: "marvels",
     title: "The Marvels",
     subs: m3,
-  } /*
+  },
   {
     id: "deadpool3",
-    title: "3 Deadpool",
-    subs: m4.default,
-  },
+    title: "3 Deadpool", // & Wolverine
+    subs: m4,
+  } /*
   {
     id: "captainamerica4",
     title: "4 Captain America", // Brave New World	
